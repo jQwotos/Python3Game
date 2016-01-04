@@ -11,31 +11,45 @@ dp_width = displayInfo.current_w
 # Display height
 dp_height = displayInfo.current_h
 
-# X, Y
-player = []
-
 # Set display
 screen = pi.display.set_mode((dp_width, dp_height))
 pi.display.set_caption('Marsio')
 
-# Holder player image
-playerImage = pi.image.load("img/projectile01.png")
+# Player info
+player = {
+    'image': pi.image.load("img/projectile01.png"),
+    'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
+}
 
+def Globals():
+    global player
+
+def controls(contaminated):
+    key = chr(contaminated).lower()
+    if key == 'w':
+
+    elif key == 's':
+
+    elif key == 'a':
 # Multithreaded quitting
 def Quitter():
     while True:
         for event in pi.event.get():
             if event.type == pi.QUIT:
+                Main.stop()
                 pi.quit()
                 exit()
+            if event.type == pi.KEYDOWN:
+                controls(event.key)
 
 # Main program that draws
 def Main():
     while True:
         screen.fill((255, 255, 255))
-        screen.blit(playerImage)
+        screen.blit(player.get("image"), player.get("positionOnScreen"))
         pi.display.flip()
 
+Globals()
 
 # Initialize and start functions
 mainThread = Thread(target=Main)
