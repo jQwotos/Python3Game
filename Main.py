@@ -18,6 +18,7 @@ pi.display.set_caption('Marsio')
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
+
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
 }
 
@@ -31,6 +32,8 @@ def controls(contaminated):
     elif key == 's':
 
     elif key == 'a':
+
+    elif key == 'd':
 # Multithreaded quitting
 def Quitter():
     while True:
