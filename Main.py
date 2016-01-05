@@ -20,7 +20,7 @@ moveAmount = 5
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
-    'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
+    'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10)),
     'movement': {'w': {'move': False,
                        'direction': [0, -1 * moveAmount]},
                  's': {'move': False,
@@ -34,25 +34,27 @@ player = {
 def Globals():
     global player
 
-def controls(contaminated):
+def controls():
     while True:
+        print(player['positionOnScreen'])
         for i in player['movement']:
             if player['movement'][i]['move'] == True:
-                player['playerOnScreen'] = player['playerOnScreen'].move(player['movement'][i]['direction'][0], player['movement'][i]['direction'][1])
+                player['positionOnScreen'] = player['positionOnScreen'].move(player['movement'][i]['direction'][0], player['movement'][i]['direction'][1])
 
 # Multithreaded quitting
 def Quitter():
     while True:
         for event in pi.event.get():
             if event.type == pi.QUIT:
-                Main.stop()
                 pi.quit()
                 exit()
             if event.type == pi.KEYDOWN:
                 if chr(event.key).lower() in player['movement']:
                     player['movement'][chr(event.key).lower()]['move'] = True
+                    print(player['movement'][chr(event.key).lower()]['move'])
             if event.type == pi.KEYUP:
-                    player['movement'][chr(event.key).lower()]['move'] = True
+                    player['movement'][chr(event.key).lower()]['move'] = False
+                    print(player['movement'][chr(event.key).lower()]['move'])
 # Main program that draws
 def Main():
     while True:
@@ -65,6 +67,8 @@ Globals()
 # Initialize and start functions
 mainThread = Thread(target=Main)
 exitThread = Thread(target=Quitter)
+controlThread = Thread(target=controls)
 
 mainThread.start()
 exitThread.start()
+controlThread.start()
