@@ -18,7 +18,6 @@ pi.display.set_caption('Marsio')
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
-    'positionOffScreen': pi.Rect(()),
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
 }
 
@@ -31,13 +30,13 @@ def Globals():
 def controls(contaminated):
     key = chr(contaminated).lower()
     if key == 'w':
-        player['positionOnScreen'].move(0, moveAmount)
+        player['positionOnScreen'] = player['positionOnScreen'].move(0, -1 * moveAmount)
     elif key == 's':
-        player['positionOnScreen'].move(0, -1 * moveAmount)
+        player['positionOnScreen'] = player['positionOnScreen'].move(0, moveAmount)
     elif key == 'a':
-        player['positionOnScreen'].move(-1 * moveAmount, 0)
+        player['positionOnScreen'] = player['positionOnScreen'].move(-1 * moveAmount, 0)
     elif key == 'd':
-        player['positionOnScreen'].move(0, moveAmount)
+        player['positionOnScreen'] = player['positionOnScreen'].move(0, moveAmount)
 
 # Multithreaded quitting
 def Quitter():
