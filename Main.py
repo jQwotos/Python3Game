@@ -19,6 +19,10 @@ pi.display.set_caption('Marsio')
 player = {
     'image': pi.image.load("img/projectile01.png"),
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
+    'movement': {'w': False,
+                 's': False,
+                 'a': False,
+                 'd': False}
 }
 
 moveAmount = 5
@@ -36,7 +40,7 @@ def controls(contaminated):
     elif key == 'a':
         player['positionOnScreen'] = player['positionOnScreen'].move(-1 * moveAmount, 0)
     elif key == 'd':
-        player['positionOnScreen'] = player['positionOnScreen'].move(0, moveAmount)
+        player['positionOnScreen'] = player['positionOnScreen'].move(moveAmount, 0)
 
 # Multithreaded quitting
 def Quitter():
@@ -48,6 +52,7 @@ def Quitter():
                 exit()
             if event.type == pi.KEYDOWN:
                 controls(event.key)
+            if event.type == pi.KEYUP:
 
 # Main program that draws
 def Main():
