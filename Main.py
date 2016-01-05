@@ -18,7 +18,7 @@ pi.display.set_caption('Marsio')
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
-
+    'positionOffScreen': pi.Rect(())
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
 }
 
