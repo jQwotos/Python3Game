@@ -15,32 +15,30 @@ dp_height = displayInfo.current_h
 screen = pi.display.set_mode((dp_width, dp_height))
 pi.display.set_caption('Marsio')
 
+moveAmount = 5
+
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10))
-    'movement': {'w': False,
-                 's': False,
-                 'a': False,
-                 'd': False}
+    'movement': {'w': {'move': False,
+                       'direction': [0, -1 * moveAmount]},
+                 's': {'move': False,
+                       'direction': [0, moveAmount]},
+                 'a': {'move': False,
+                       'direction': [-1 * moveAmount, 0]},
+                 'd': {'move': False,
+                       'direction': [moveAmount, 0]}}
 }
-
-moveAmount = 5
 
 def Globals():
     global player
-    global moveAmount
 
 def controls(contaminated):
-    key = chr(contaminated).lower()
-    if key == 'w':
-        player['positionOnScreen'] = player['positionOnScreen'].move(0, -1 * moveAmount)
-    elif key == 's':
-        player['positionOnScreen'] = player['positionOnScreen'].move(0, moveAmount)
-    elif key == 'a':
-        player['positionOnScreen'] = player['positionOnScreen'].move(-1 * moveAmount, 0)
-    elif key == 'd':
-        player['positionOnScreen'] = player['positionOnScreen'].move(moveAmount, 0)
+    while True:
+        for i in player['movement']:
+            if player['movement'][i]['move'] == True:
+                player['playerOnScreen'] = player['playerOnScreen'].move(player['movement'][i]['direction'][0], player['movement'][i]['direction'][1])
 
 # Multithreaded quitting
 def Quitter():
@@ -51,9 +49,10 @@ def Quitter():
                 pi.quit()
                 exit()
             if event.type == pi.KEYDOWN:
-                controls(event.key)
+                if chr(event.key).lower() in player['movement']:
+                    player['movement'][chr(event.key).lower()]['move'] = True
             if event.type == pi.KEYUP:
-
+                    player['movement'][chr(event.key).lower()]['move'] = True
 # Main program that draws
 def Main():
     while True:
