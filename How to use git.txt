@@ -1,0 +1,7 @@
+Daily Routine
+git pull
+
+When your done working on stuff
+git add -A
+git commit -m "insert message here"
+git push
