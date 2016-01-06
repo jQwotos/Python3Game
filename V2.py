@@ -16,4 +16,5 @@ dp = {
 screen = pygame.display.set_mode((dp.get("width"), dp.get("height")))
 pygame.display.set_caption("Marsio")
 
+# Array is under map.level
 map = loadMap.load()

@@ -6,7 +6,7 @@ class load:
         except:
             print("Unable to load map")
 
-        self.map = []
+        self.level = []
 
         for self.line in self.f:
             self.map.append([])
