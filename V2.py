@@ -1,4 +1,6 @@
 # </> with <3 by Jason Le
+# This is my implementation of dem cool classes
+
 import pygame
 from threading import Thread
 
@@ -14,45 +16,52 @@ dp = {
 screen = pygame.display.set_mode((dp.get("width"), dp.get("height")))
 pygame.display.set_caption("Marsio")
 
-player = {
-    "image" : pygame.image.load('img/trump mount open head.jpg'),
-    "onScreen" : {"x": dp.get("width") // 3, "y": dp.get("height") // 3},
-    "offScreen" : 0,
-    "jumping" : False
-}
+class CreateOnScreen:
+    def __init__(self):
+        self.x = dp.get("width") // 3
+        self.y = dp.get("height") // 3
 
-global player
+class CreatePlayer:
+    def __init__(self):
+        try:
+            self.image = pygame.image.load("img/projectile01.png")
+        except:
+            print("Unable to load image")
+        self.jumping = 0
+        self.offScreen = 0
+        self.onScreen = CreateOnScreen()
 
-def Jumper():
-    for x in range(10):
-        player["onScreen"]["y"] += 1
-    for x in range(10):
-        player["onScreen"]["y"] -= 1
-    player["jumping"] = False
+    def fall(self):
+        if self.onScreen.y <= dp.get("height") // 3 and self.jumping == 0:
+            self.onScreen.y += 1
+        print(self.onScreen.y)
+
+    def jump(self):
+        if self.jumping == 0:
+            self.jumping = 50
 
 def draw(object, x, y):
     screen.blit(object, (x, y))
 
-def jump():
-    if player.get["jumping"] == False:
-        player["jumping"] = True
-        Thread(target=Jumper).start()
-
-def controlScheme():
+def controlScheme(player):
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                jump()
+            if event.key == pygame.K_SPACE and player.jumping == False:
+                player.jump()
+        if player.jumping > 0:
+            player.onScreen.y += 1
+    player.fall()
 
 def main():
+    player = CreatePlayer()
     while True:
-        controlScheme()
+        controlScheme(player)
         # Holder white background
         screen.fill((255, 255, 255))
-        draw(player.get("image"), player.get("onScreen").get("x"), player.get("onScreen").get("y"))
+        draw(player.image, player.onScreen.x, player.onScreen.y)
         pygame.display.flip()
 
 main()
