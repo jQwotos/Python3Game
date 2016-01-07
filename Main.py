@@ -15,60 +15,38 @@ dp_height = displayInfo.current_h
 screen = pi.display.set_mode((dp_width, dp_height))
 pi.display.set_caption('Marsio')
 
-moveAmount = 5
+moveAmount = 1
 
 # Player info
 player = {
     'image': pi.image.load("img/projectile01.png"),
     'positionOnScreen': pi.Rect((dp_width // 3, dp_height // 3), (dp_width // 10, dp_width // 10)),
     'movement': {'w': {'move': False,
-                       'direction': [0, -1 * moveAmount]},
-                 's': {'move': False,
-                       'direction': [0, moveAmount]},
-                 'a': {'move': False,
-                       'direction': [-1 * moveAmount, 0]},
-                 'd': {'move': False,
-                       'direction': [moveAmount, 0]}}
+                       'direction': [0, -1 * moveAmount]}}
 }
 
 def Globals():
     global player
 
-def controls():
-    while True:
-        print(player['positionOnScreen'])
-        for i in player['movement']:
-            if player['movement'][i]['move'] == True:
-                player['positionOnScreen'] = player['positionOnScreen'].move(player['movement'][i]['direction'][0], player['movement'][i]['direction'][1])
+def jump():
+    player['positionOnScreen'] = player['positionOnScreen'].move(player['movement']['w']['direction'][0], player['movement']['w']['direction'][1])
 
 # Multithreaded quitting
-def Quitter():
-    while True:
-        for event in pi.event.get():
-            if event.type == pi.QUIT:
-                pi.quit()
-                exit()
-            if event.type == pi.KEYDOWN:
-                if chr(event.key).lower() in player['movement']:
-                    player['movement'][chr(event.key).lower()]['move'] = True
-                    print(player['movement'][chr(event.key).lower()]['move'])
-            if event.type == pi.KEYUP:
-                    player['movement'][chr(event.key).lower()]['move'] = False
-                    print(player['movement'][chr(event.key).lower()]['move'])
+def controlScheme():
+    for event in pi.event.get():
+        if event.type == pi.QUIT:
+            pi.quit()
+            exit()
+        if event.type == pi.KEYDOWN:
+            if chr(event.key).lower() == 'w':
+                jump()
 # Main program that draws
 def Main():
     while True:
+        controlScheme()
         screen.fill((255, 255, 255))
         screen.blit(player.get("image"), player.get("positionOnScreen"))
         pi.display.flip()
 
 Globals()
-
-# Initialize and start functions
-mainThread = Thread(target=Main)
-exitThread = Thread(target=Quitter)
-controlThread = Thread(target=controls)
-
-mainThread.start()
-exitThread.start()
-controlThread.start()
+Main()
