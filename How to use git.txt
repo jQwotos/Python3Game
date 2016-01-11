@@ -1,3 +1,6 @@
+Only do this when you don't have the repository
+git clone https://github.com/jQwotos/Python3Game.git
+
 Daily Routine
 git pull
 
