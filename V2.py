@@ -1,4 +1,4 @@
-import loadMap,
+import player
 import pygame as pi
 from threading import Thread
 
@@ -15,7 +15,6 @@ screen = pi.display.set_mode((dp.get("width"), dp.get("height")))
 pi.display.set_caption("Marsio")
 
 # Array is under map.level
-map = loadMap.load()
 
 def Main():
     while True:
@@ -24,4 +23,4 @@ def Main():
                 pi.quit()
                 exit()
             if event.type == pi.KEYDOWN:
-                pass
+                controls.send(event.key)
