@@ -8,11 +8,40 @@ A       |       Move left
 D       |       Move Right
 SPACE   |       Shoot
 """
-import pygame as pi, os
+import pygame as pi, glob
+
+class Load:
+    def __init__(self):
+        self.maps = glob.glob("levels/*.map")
+        self.mapFiles = []
+
+        for file in self.maps:
+            self.mapFiles.append([])
+            f = open(file)
+            for line in f:
+                self.mapFiles[-1].append([])
+                for character in line:
+                    self.mapFiles[-1][-1].append(character)
+
+class Blocks(pi.sprite.Sprite):
+    def __init__(self):
+        super(Blocks, self).__init__()
+        self.image = pi.image.load("img/wall01.png")
+        self.rect = self.image.get_rect()
+
+    def set_pos(self, x, y):
+        self.rect.x = x
+        self.rect.y = y
+
+    def move(self, x_speed):
+        self.X_direct += x_speed
+
+    def update(self):
+        self.rect.x += self.X_direct
 
 # Class variables that is taken from pygame sprite library
 class Player(pi.sprite.Sprite):
-    def __init__(self, width = 64, height = 64):
+    def __init__(self):
         # Creates all of the pygame sprite standard properties
         super(Player, self).__init__()
         # Image based on passed width and height
@@ -31,8 +60,9 @@ class Player(pi.sprite.Sprite):
         self.Y_direct += y_speed
         self.X_direct += x_speed
 
-    def update(self, collidable, speed):
-        self.rect.x += self.X_direct
+    def update(self, collidable, speed, mapMoveBlocks):
+        for block in mapMoveBlocks:
+            block.rekt.x += self.X_direct
         # Gets all of the collided blocks with the player block and puts it into a list called collidables
         collision_list = pi.sprite.spritecollide(self, collidable, False)
         for collided_obj in collision_list:
@@ -134,10 +164,7 @@ while running:
             if event.key == pi.K_s:
                 player.move(-1 * speed, 0)
 
-    # Dev line
-    print(player.Y_direct, player.X_direct)
-
-    player.update(collidable_objects, speed)
+    player.update(collidable_objects, speed, mapMoveBlocks)
 
     # Draw all blocks on screen
     screen.fill((255, 255, 255))
