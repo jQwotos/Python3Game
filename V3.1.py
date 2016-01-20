@@ -129,10 +129,12 @@ mapMoveBlocks = pi.sprite.Group()
 def remap():
     global dp
     currentX = 0
-    currentY = dp.get("height")
-    for map in len(maps.mapFiles):
-        for line in len(maps.mapFiles[map]):
-            for character in len(maps.mapFiles[map][line]):
+    currentY = 0
+    currentMap = 0
+    for map in range (len(maps.mapFiles)):
+        constant = dp.get("height") // len(maps.mapFiles)
+        for line in range (len(maps.mapFiles[map])):
+            for character in range (len(maps.mapFiles[map][line])):
                 converted = maps.mapFiles[map][line][character]
                 if converted == " ":
                     pass
@@ -141,10 +143,15 @@ def remap():
                     maps.mapFiles[map][line][character].set_pos(currentX, currentY)
                     collidable_objects.add(maps.mapFiles[map][line][character])
                     mapMoveBlocks.add(maps.mapFiles[map][line][character])
+                    if currentX == 0:
+                        print(currentX)
+                    if map == currentMap:
+                        drawables.add(maps.mapFiles[map][line][character])
                 if converted == "t":
                     maps.mapFiles[map][line][character].set_img("img/wallfloat01.png")
-                currentX -= 5
-            currentY -= 5
+                currentX += constant
+            currentX = 0
+            currentY += constant
 
 
 # Variable that kills program
@@ -154,6 +161,7 @@ speed = 5
 
 # Converts the text arrays into objects
 remap()
+currentMap = 0
 
 # Main Loop
 while running:
