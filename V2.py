@@ -26,6 +26,17 @@ def Main():
             if event.type == pi.KEYDOWN:
                 if event.key == pi.K_SPACE:
                     player.jump()
+                if event.key == pi.K_d:
+                    player.right = True
+                if event.key == pi.K_a:
+                    player.left = True
+            if event.type == pi.KEYUP:
+                if event.key == pi.K_d:
+                    player.right = False
+                if event.key == pi.K_a:
+                    player.left = False
+
+        player.move()
 
         if player.jumping > 0:
             player.jump()

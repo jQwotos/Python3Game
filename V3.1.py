@@ -1,5 +1,6 @@
 # This is the proper version that I'm working on!
 # Everything is also commented for better editing with others.
+# Classes can be moved to new files and then imported if wish
 # Current key binds
 """
 ESC     |       Quit Game
@@ -9,19 +10,6 @@ D       |       Move Right
 SPACE   |       Shoot
 """
 import pygame as pi, glob
-
-class Load:
-    def __init__(self):
-        self.maps = glob.glob("levels/*.map")
-        self.mapFiles = []
-
-        for file in self.maps:
-            self.mapFiles.append([])
-            f = open(file)
-            for line in f:
-                self.mapFiles[-1].append([])
-                for character in line:
-                    self.mapFiles[-1][-1].append(character)
 
 class Blocks(pi.sprite.Sprite):
     def __init__(self):
@@ -38,6 +26,22 @@ class Blocks(pi.sprite.Sprite):
 
     def update(self):
         self.rect.x += self.X_direct
+
+    def set_img(self, image):
+        self.image = pi.image.load(image)
+class Load:
+    def __init__(self):
+        self.maps = glob.glob("levels/*.map")
+        self.mapFiles = []
+
+        for file in self.maps:
+            self.mapFiles.append([])
+            f = open(file)
+            for line in f:
+                self.mapFiles[-1].append([])
+                for character in line:
+                    if character != "\n":
+                        self.mapFiles[-1][-1].append(character)
 
 # Class variables that is taken from pygame sprite library
 class Player(pi.sprite.Sprite):
@@ -62,7 +66,7 @@ class Player(pi.sprite.Sprite):
 
     def update(self, collidable, speed, mapMoveBlocks):
         for block in mapMoveBlocks:
-            block.rekt.x += self.X_direct
+            block.rect.x += self.X_direct
         # Gets all of the collided blocks with the player block and puts it into a list called collidables
         collision_list = pi.sprite.spritecollide(self, collidable, False)
         for collided_obj in collision_list:
@@ -79,7 +83,6 @@ class Player(pi.sprite.Sprite):
                 self.rect.bottom = collided_obj.rect.top
             elif self.Y_direct < 0:
                 self.rect.top = collided_obj.rect.bottom
-
 
     # Here for the peps to use, updates the player position
     def set_pos(self,x ,y):
@@ -101,6 +104,9 @@ dp = {
     "height" : displayInfo.current_h
 }
 
+# Load all levels into maps variable
+maps = Load()
+
 # Set display
 screen = pi.display.set_mode((dp.get("width"), dp.get("height")))
 pi.display.set_caption("Rocket Trump")
@@ -114,21 +120,40 @@ drawables = pi.sprite.Group()
 # Create block
 player = Player()
 
-# Create new block with designated color
-tester_block = Player()
-
-tester_block.set_pos(dp.get("width") // 2, dp.get("height") // 2)
-
 # Add blocks to group
-drawables.add(player, tester_block)
+drawables.add(player)
 
 collidable_objects = pi.sprite.Group()
-collidable_objects.add(tester_block)
+mapMoveBlocks = pi.sprite.Group()
+
+def remap():
+    global dp
+    currentX = 0
+    currentY = dp.get("height")
+    for map in len(maps.mapFiles):
+        for line in len(maps.mapFiles[map]):
+            for character in len(maps.mapFiles[map][line]):
+                converted = maps.mapFiles[map][line][character]
+                if converted == " ":
+                    pass
+                elif converted == "x" or converted == "t":
+                    maps.mapFiles[map][line][character] = Blocks()
+                    maps.mapFiles[map][line][character].set_pos(currentX, currentY)
+                    collidable_objects.add(maps.mapFiles[map][line][character])
+                    mapMoveBlocks.add(maps.mapFiles[map][line][character])
+                if converted == "t":
+                    maps.mapFiles[map][line][character].set_img("img/wallfloat01.png")
+                currentX -= 5
+            currentY -= 5
+
 
 # Variable that kills program
 running = True
 
 speed = 5
+
+# Converts the text arrays into objects
+remap()
 
 # Main Loop
 while running:
