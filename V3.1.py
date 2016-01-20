@@ -131,8 +131,10 @@ def remap():
     currentX = 0
     currentY = 0
     currentMap = 0
+    print(dp)
     for map in range (len(maps.mapFiles)):
-        constant = dp.get("height") // len(maps.mapFiles)
+        constant = dp.get("height") // len(maps.mapFiles[currentMap])
+        print(constant)
         for line in range (len(maps.mapFiles[map])):
             for character in range (len(maps.mapFiles[map][line])):
                 converted = maps.mapFiles[map][line][character]
@@ -144,7 +146,8 @@ def remap():
                     collidable_objects.add(maps.mapFiles[map][line][character])
                     mapMoveBlocks.add(maps.mapFiles[map][line][character])
                     if currentX == 0:
-                        print(currentX)
+                        pass
+                        #print(maps.mapFiles[map][line][character].rect)
                     if map == currentMap:
                         drawables.add(maps.mapFiles[map][line][character])
                 if converted == "t":
@@ -157,7 +160,7 @@ def remap():
 # Variable that kills program
 running = True
 
-speed = 5
+speed = 10
 
 # Converts the text arrays into objects
 remap()
@@ -179,9 +182,9 @@ while running:
                 running = False
             # Key movement, - when moving up and to the left, + when moving down and to the right
             if event.key == pi.K_a:
-                player.move(0, -1 * speed)
-            if event.key == pi.K_d:
                 player.move(0, speed)
+            if event.key == pi.K_d:
+                player.move(0, -1 * speed)
             if event.key == pi.K_w:
                 player.move(-1 * speed , 0)
             if event.key == pi.K_s:
@@ -189,9 +192,9 @@ while running:
 
         if event.type == pi.KEYUP:
             if event.key == pi.K_a:
-                player.move(0, speed)
-            if event.key == pi.K_d:
                 player.move(0, -1 * speed)
+            if event.key == pi.K_d:
+                player.move(0, speed)
             if event.key == pi.K_w:
                 player.move(speed , 0)
             if event.key == pi.K_s:
