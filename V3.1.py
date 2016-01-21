@@ -134,7 +134,6 @@ def remap():
     print(dp)
     for map in range (len(maps.mapFiles)):
         constant = dp.get("height") // len(maps.mapFiles[currentMap])
-        print(constant)
         for line in range (len(maps.mapFiles[map])):
             for character in range (len(maps.mapFiles[map][line])):
                 converted = maps.mapFiles[map][line][character]

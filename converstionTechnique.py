@@ -27,9 +27,6 @@ class Blocks(pi.sprite.Sprite):
     def update(self):
         self.rect.x += self.X_direct
 
-    def set_img(self, image):
-        self.image = pi.image.load(image)
-
     def draw(self):
         screen.blit(self.image, self.rect)
 class Load:
@@ -53,7 +50,7 @@ class Player(pi.sprite.Sprite):
         # Creates all of the pygame sprite standard properties
         super(Player, self).__init__()
         # Image based on passed width and height
-        self.image = pi.transform.scale(pi.image.load("img/rocketchair05r.png"), (dp.get("height") // len(maps.mapFiles[maps.currentMap]), dp.get("height") // len(maps.mapFiles[maps.currentMap]) * 2))
+        self.image = pi.image.load("img/rocketchair05r.png")
         # Position tracking using pygame rect taking in from the image properties
         self.rect = self.image.get_rect()
 
@@ -62,8 +59,6 @@ class Player(pi.sprite.Sprite):
 
         self.Y_direct = 0
         self.X_direct = 0
-        self.jumpHeight = 0
-        self.maxJump = 3
 
     # Used to allow for smoother movement
     def move(self, y_speed, x_speed):
@@ -80,15 +75,7 @@ class Player(pi.sprite.Sprite):
                 self.rect.right = collided_obj.rect.left
             elif self.X_direct < 0:
                 self.rect.left = collided_obj.rect.right
-
-        if self.jumpHeight > dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump):
-            self.rect.y += dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5)
-            self.jumpHeight -= dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5)
-        else:
-            self.rect.y -= dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 10)
-            if self.Y_direct > 0:
-                self.rect.jumpHeight = dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump)
-
+        self.rect.y += self.Y_direct
 
         collision_list = pi.sprite.spritecollide(self, collidable, False)
 
@@ -147,6 +134,7 @@ def remap():
     print(dp)
     for map in range (len(maps.mapFiles)):
         constant = dp.get("height") // len(maps.mapFiles[maps.currentMap])
+        print(constant)
         for line in range (len(maps.mapFiles[map])):
             for character in range (len(maps.mapFiles[map][line])):
                 converted = maps.mapFiles[map][line][character]
@@ -160,8 +148,10 @@ def remap():
                     maps.mapFiles[map][line][character].set_pos(currentX, currentY)
                     collidable_objects.add(maps.mapFiles[map][line][character])
                     mapMoveBlocks.add(maps.mapFiles[map][line][character])
+                    print(maps.mapFiles[map][line][character].rect)
                     if currentX == 0:
                         pass
+                        #print(maps.mapFiles[map][line][character].rect)
                     if map == maps.currentMap:
                         drawables.add(maps.mapFiles[map][line][character])
                 currentX += constant
