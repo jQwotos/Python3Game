@@ -81,14 +81,14 @@ class Player(pi.sprite.Sprite):
             elif self.X_direct < 0:
                 self.rect.left = collided_obj.rect.right
 
-        if self.jumpHeight > dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump):
-            self.rect.y += dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5)
-            self.jumpHeight -= dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5)
+        if self.jumpHeight > dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump:
+            self.rect.y += dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5
+            self.jumpHeight -= dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5
         else:
-            self.rect.y -= dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 10)
+            if len(collision_list) == 0:
+                self.rect.y += dp.get("height") // len(maps.mapFiles[maps.currentMap]) // 5
             if self.Y_direct > 0:
-                self.rect.jumpHeight = dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump)
-
+                self.jumpHeight = dp.get("height") // len(maps.mapFiles[maps.currentMap]) * self.maxJump
 
         collision_list = pi.sprite.spritecollide(self, collidable, False)
 
@@ -172,7 +172,7 @@ def remap():
 # Variable that kills program
 running = True
 
-speed = 20
+speed = 1
 
 # Converts the text arrays into objects
 remap()
