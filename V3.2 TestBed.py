@@ -181,6 +181,7 @@ currentMap = 0
 # Main Loop
 while running:
     # Event Handler
+    # Code below made by Ricky
     for event in pi.event.get():
         if event.type == pi.QUIT:
             running = False
@@ -211,6 +212,7 @@ while running:
                 player.move(speed , 0)
             if event.key == pi.K_s:
                 player.move(-1 * speed, 0)
+    # End of work by Ricky
 
     player.update(collidable_objects, speed, mapMoveBlocks)
 
