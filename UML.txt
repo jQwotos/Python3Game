@@ -1,0 +1,43 @@
++------------------+
+| pi.sprite.Sprite |
++------------------+
+     .                                   
+    /_\                                  
+     |               [ pi.sprite.Sprite ]
+     |                   .               
+     |                  /_\              
+     |                   |               
+     |                   |               
++------------+       +----------+        
+|   Player   |       |  Blocks  |        
+|------------|       |----------|        
+| image      |       | image    |        
+| rect       |       | rect     |        
+| sound      |       |----------|        
+| Y_direct   |       | __init__ |        
+| X_direct   |       | set_pos  |        
+| jumpHeight |       | move     |        
+| maxJump    |       | update   |        
+| constant   |       | set_img  |        
+|------------|       | draw     |        
+| __init__   |       +----------+        
+| move       |                           
+| moveBlocks |                           
+| update     |                           
+| set_pos    |                           
+| play       |                           
+| draw       |                           
++------------+                           
+                                                        
+                                                        
+                                                        
+                                                        
++------------+                             +-----------+
+|    Load    |                             | glob.glob |
+|------------|                             +-----------+
+| maps       |  ---->  [ glob.glob ]                    
+| mapFiles   |                                          
+| currentMap |                                          
+|------------|                                          
+| __init__   |                                          
++------------+           
