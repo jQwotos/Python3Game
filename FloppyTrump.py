@@ -1,6 +1,6 @@
 # This game will scale to your display resolution!
 # There is sound! So put on your headphones.
-# Idea by Justin
+# Idea and sound by Justin; Maps and keystroke input by Ricky; Pictures and map modifications by Patrick; Backend by Jason
 """
 ESC     |       Quit Game
 W       |       Move up
@@ -122,7 +122,6 @@ class Player(pi.sprite.Sprite):
         self.total_x -= speed / 2
         self.relative_x += speed / 2
 
-        print(self.relative_x, remapper.totalX)
         if self.relative_x > remapper.totalX:
             self.kill(mapMoveBlocks, True)
 

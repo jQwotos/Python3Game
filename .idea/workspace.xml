@@ -4,8 +4,6 @@
     <list default="true" id="9afcb03c-9e83-4818-9d71-07295a46cd16" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FloppyTrump.py" afterPath="$PROJECT_DIR$/FloppyTrump.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/levels/1.map" afterPath="$PROJECT_DIR$/levels/1.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/levels/2.map" afterPath="$PROJECT_DIR$/levels/2.map" />
     </list>
     <ignored path="Python3Game.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,10 +27,10 @@
       <file leaf-file-name="FloppyTrump.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/FloppyTrump.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7908163">
-              <caret line="185" column="36" selection-start-line="185" selection-start-column="36" selection-end-line="185" selection-end-column="36" />
+            <state vertical-scroll-proportion="0.7270408">
+              <caret line="121" column="33" selection-start-line="121" selection-start-column="33" selection-end-line="121" selection-end-column="33" />
               <folding>
-                <element signature="e#274#299#0" expanded="true" />
+                <element signature="e#380#405#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -659,7 +657,13 @@
       <option name="project" value="LOCAL" />
       <updated>1453484356817</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Worked on Floppy Trump">
+      <created>1453487973870</created>
+      <option name="number" value="00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1453487973870</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -711,7 +715,8 @@
     <MESSAGE value="Worked on V3, and added V3.1 which is used as a testing bed" />
     <MESSAGE value="Worked on stuff" />
     <MESSAGE value="added FloppyTrump" />
-    <option name="LAST_COMMIT_MESSAGE" value="added FloppyTrump" />
+    <MESSAGE value="Worked on Floppy Trump" />
+    <option name="LAST_COMMIT_MESSAGE" value="Worked on Floppy Trump" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1063,10 +1068,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/FloppyTrump.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7908163">
-          <caret line="185" column="36" selection-start-line="185" selection-start-column="36" selection-end-line="185" selection-end-column="36" />
+        <state vertical-scroll-proportion="0.7270408">
+          <caret line="121" column="33" selection-start-line="121" selection-start-column="33" selection-end-line="121" selection-end-column="33" />
           <folding>
-            <element signature="e#274#299#0" expanded="true" />
+            <element signature="e#380#405#0" expanded="true" />
           </folding>
         </state>
       </provider>
