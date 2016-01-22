@@ -65,15 +65,20 @@ class Player(pi.sprite.Sprite):
         self.X_direct += x_speed
 
     def update(self, collidable, speed, mapMoveBlocks):
-        for block in mapMoveBlocks:
-            block.rect.x += self.X_direct
         # Gets all of the collided blocks with the player block and puts it into a list called collidables
+        self.rect.x -= self.X_direct
         collision_list = pi.sprite.spritecollide(self, collidable, False)
         for collided_obj in collision_list:
-            if self.X_direct > 0:
+            if self.X_direct < 0:
                 self.rect.right = collided_obj.rect.left
-            elif self.X_direct < 0:
+                print("Collision on Right")
+            if self.X_direct > 0:
                 self.rect.left = collided_obj.rect.right
+                print("Collision on Left")
+
+        for block in mapMoveBlocks:
+            block.rect.x -= speed / 2
+
         self.rect.y += self.Y_direct
 
         collision_list = pi.sprite.spritecollide(self, collidable, False)
