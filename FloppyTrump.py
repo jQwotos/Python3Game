@@ -32,6 +32,7 @@ class Load:
     def __init__(self):
         self.maps = glob.glob("levels/*.map")
         self.mapFiles = []
+        self.mapLength = []
         self.currentMap = 0
 
         for file in self.maps:
@@ -49,7 +50,8 @@ class Sound:
         self.soundQuotes = glob.glob("sounds/quotes/*")
         self.music = glob.glob("sounds/music/*")
         self.background = pi.mixer.Sound(self.music[randint(0, len(self.music) - 1)])
-        self.background.play()
+        self.background.set_volume(.1)
+        self.background.play(9)
 
     def death(self):
         pi.mixer.music.load(self.soundQuotes[randint(0, len(self.soundQuotes) - 1)])
@@ -66,20 +68,20 @@ class Player(pi.sprite.Sprite):
         # Position tracking using pygame rect taking in from the image properties
         self.rect = self.image.get_rect()
 
-        # Loads sound effect
-        self.sound = pi.mixer.Sound("sounds/effects/jump.wav")
 
         self.Y_direct = 0
         self.X_direct = 0
 
         self.total_x = 0
 
+        self.relative_x = 0
+
     # Used to allow for smoother movement
     def move(self, y_speed, x_speed):
         self.Y_direct += y_speed
         self.X_direct += x_speed
 
-    def kill(self, mapMoveBlocks):
+    def kill(self, mapMoveBlocks, won = False):
         run = True
         print("I died, oh no!")
         for block in mapMoveBlocks:
@@ -87,6 +89,10 @@ class Player(pi.sprite.Sprite):
         self.set_pos(dp.get("height") // 2, dp.get("width") // 5)
         self.X_direct = 0
         self.Y_direct = 0
+        self.relative_x = 0
+        if won:
+            maps.currentMap += 1
+            remapper.__init__()
         sounder.death()
 
         while run:
@@ -101,9 +107,11 @@ class Player(pi.sprite.Sprite):
         self.total_x = 0
         print("Respawned")
 
+
     def update(self, collidable, speed, mapMoveBlocks):
         # Gets all of the collided blocks with the player block and puts it into a list called collidables
         self.rect.x -= self.X_direct
+        self.relative_x -= self.X_direct
         self.rect.y += self.Y_direct
         collision_list = pi.sprite.spritecollide(self, collidable, False)
         if len(collision_list) > 0 or self.rect.y > dp.get("height") or self.rect.y < 0 or self.rect.x < 0 or self.rect.x > dp.get("width"):
@@ -112,6 +120,12 @@ class Player(pi.sprite.Sprite):
         for block in mapMoveBlocks:
             block.rect.x -= speed / 2
         self.total_x -= speed / 2
+        self.relative_x += speed / 2
+
+        print(self.relative_x, remapper.totalX)
+        if self.relative_x > remapper.totalX:
+            self.kill(mapMoveBlocks, True)
+
 
     # Here for the peps to use, updates the player position
     def set_pos(self,x ,y):
@@ -155,35 +169,38 @@ drawables.add(player)
 collidable_objects = pi.sprite.Group()
 mapMoveBlocks = pi.sprite.Group()
 
-def remap():
-    global dp
-    currentX = 0
-    currentY = 0
-    currentMap = 0
-    for map in range (len(maps.mapFiles)):
-        constant = dp.get("height") // len(maps.mapFiles[currentMap])
-        for line in range (len(maps.mapFiles[map])):
-            for character in range (len(maps.mapFiles[map][line])):
-                converted = maps.mapFiles[map][line][character]
+class Remap:
+    def __init__(self):
+        global dp
+        currentX = 0
+        currentY = 0
+        self.totalX = 0
+        currentLine = 0
+        collidable_objects.empty()
+        drawables.empty()
+        drawables.add(player)
+        constant = dp.get("height") // len(maps.mapFiles[maps.currentMap])
+        for line in range (len(maps.mapFiles[maps.currentMap])):
+            for character in range (len(maps.mapFiles[maps.currentMap][line])):
+                converted = maps.mapFiles[maps.currentMap][line][character]
                 if converted == " ":
                     pass
                 elif converted == "x" or converted == "t":
                     if converted == "x":
-                        maps.mapFiles[map][line][character] = Blocks("img/wall01.png")
+                        maps.mapFiles[maps.currentMap][line][character] = Blocks("img/wall01.png")
                     if converted == "t":
-                        maps.mapFiles[map][line][character] = Blocks("img/wallfloat01.png")
-                    maps.mapFiles[map][line][character].set_pos(currentX, currentY)
-                    collidable_objects.add(maps.mapFiles[map][line][character])
-                    mapMoveBlocks.add(maps.mapFiles[map][line][character])
-                    if currentX == 0:
-                        pass
-                        #print(maps.mapFiles[map][line][character].rect)
-                    if map == currentMap:
-                        drawables.add(maps.mapFiles[map][line][character])
+                        maps.mapFiles[maps.currentMap][line][character] = Blocks("img/wallfloat01.png")
+                    maps.mapFiles[maps.currentMap][line][character].set_pos(currentX, currentY)
+                    collidable_objects.add(maps.mapFiles[maps.currentMap][line][character])
+                    mapMoveBlocks.add(maps.mapFiles[maps.currentMap][line][character])
+                    drawables.add(maps.mapFiles[maps.currentMap][line][character])
                 currentX += constant
+                if currentLine == 0:
+                    self.totalX += constant
+            currentLine += 1
             currentX = 0
             currentY += constant
-
+        print(self.totalX)
 
 # Variable that kills program
 running = True
@@ -191,7 +208,7 @@ running = True
 speed = 10
 
 # Converts the text arrays into objects
-remap()
+remapper = Remap()
 currentMap = 0
 
 # Main Loop
