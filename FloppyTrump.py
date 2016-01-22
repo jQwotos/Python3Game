@@ -214,6 +214,10 @@ class Remap:
     def __init__(self):
         # Grabs the display variables
         global dp
+        if maps.currentMap + 1 > len(maps.mapFiles):
+            print("You've won!")
+            pi.quit()
+            quit()
         # Local currentX variable that does not need to be affected by others it represents the relative symbol to a position on the map
         currentX = 0
         # same as currentX but with verticle position
